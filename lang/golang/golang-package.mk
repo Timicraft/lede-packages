@@ -280,16 +280,19 @@ define GoPackage/Build/Compile
 			for def in $(GO_PKG_LDFLAGS_X); do \
 				pkg_ldflags="$$$$pkg_ldflags -X $$$$def" ; \
 			done ; \
-			go install \
-				$$$${installsuffix:+-installsuffix $$$$installsuffix} \
-				-gcflags "$$$$trimpath" \
-				-asmflags "$$$$trimpath" \
-				-ldflags "$$$$ldflags" \
-				-v \
-				$$$${pkg_gcflags:+-gcflags "$$$$pkg_gcflags"} \
-				$$$${pkg_ldflags:+-ldflags "$$$$pkg_ldflags"} \
-				$(1) \
-				$$$$targets ; \
+			( \
+				set -x ; \
+				go install \
+					$$$${installsuffix:+-installsuffix $$$$installsuffix} \
+					-gcflags "$$$$trimpath" \
+					-asmflags "$$$$trimpath" \
+					-ldflags "$$$$ldflags" \
+					-v \
+					$$$${pkg_gcflags:+-gcflags "$$$$pkg_gcflags"} \
+					$$$${pkg_ldflags:+-ldflags "$$$$pkg_ldflags"} \
+					$(1) \
+					$$$$targets ; \
+			) ; \
 			retval=$$$$? ; \
 			echo ; \
 			\
